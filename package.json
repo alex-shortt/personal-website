@@ -87,7 +87,7 @@
     "react-transition-group": "^4.4.1",
     "stats.js": "^0.17.0",
     "styled-components": "^4.2.0",
-    "three": "^0.118.3",
+    "three": "^0.125.0",
     "three.terrain.js": "^1.6.0",
     "typeface-roboto": "^0.0.54",
     "use-deep-compare-effect": "^1.2.0",
