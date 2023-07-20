@@ -46,7 +46,7 @@ export default function Home() {
             href="http://jermaine-fowler-site.s3-website-us-west-1.amazonaws.com"
             className="work"
           >
-            Jermaine Fowler, 2020
+            Jermaine Fowler Website, 2020
           </a>
           <a
             href="https://assets.mediated.world/site/latent-explorer/wide-video.mp4"
@@ -58,7 +58,7 @@ export default function Home() {
             href="http://smile.sashsite.com.s3-website-us-west-1.amazonaws.com/"
             className="work"
           >
-            Sash, 2019
+            Sash Website, 2019
           </a>
           <a
             href="https://assets.mediated.world/site/foundation/inbed.mp4"
@@ -74,13 +74,16 @@ export default function Home() {
             href="http://first-personal-site.s3-website-us-west-1.amazonaws.com/"
             className="work"
           >
-            First Personal Site, 2018
+            Personal Website, 2018
           </a>
           <a href="https://www.getinstadata.com/" className="startup">
             Metaplug, 2017-2020
           </a>
           <a href="https://www.awge.com" className="work">
-            AWGE, 2017
+            AWGE Website, 2017
+          </a>
+          <a href="https://www.gta5-mods.com/scripts/portal-gun-net" className="art">
+            GTAV Portal Gun Mod, 2015
           </a>
           <br />
           <h4>Links</h4>
