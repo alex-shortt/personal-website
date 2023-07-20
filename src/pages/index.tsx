@@ -30,7 +30,13 @@ export default function Home() {
           >
             Y Combinator, S21
           </a>
-          <p className={inter.className}>UC Santa Barbara, for a while</p>
+          <a
+            href="https://www.muse.place"
+            className={inter.className}
+          >
+            Muse Place, '20-'23
+          </a>
+          <p className={inter.className}>UC Santa Barbara, '18-'21</p>
           <h4 className={inter.className}>websites</h4>
           <a
             href="http://jermaine-fowler-site.s3-website-us-west-1.amazonaws.com"
@@ -70,9 +76,6 @@ export default function Home() {
             Foundation, 2019
           </a>
           <h4 className={inter.className}>links</h4>
-          <a href="https://muse.place/alex" className={inter.className}>
-            Muse
-          </a>
           <a href="https://twitter.com/_alexshortt" className={inter.className}>
             Twitter
           </a>
