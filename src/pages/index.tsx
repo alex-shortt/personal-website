@@ -19,8 +19,7 @@ export default function Home() {
           <br />
           <br />
           <h4 className={inter.className}>
-            Currently working on{" "}
-            <a href="https://logic-map.vercel.app">Logic Map</a>
+            Currently working on <a href="https://logicmap.com">logicmap.com</a>
           </h4>
           <br />
           <br />
