@@ -30,13 +30,11 @@ export default function Home() {
           >
             Y Combinator, S21
           </a>
-          <a
-            href="https://www.muse.place"
-            className={inter.className}
-          >
+          <a href="https://www.muse.place" className={inter.className}>
             Muse Place, '20-'23
           </a>
           <p className={inter.className}>UC Santa Barbara, '18-'21</p>
+          <br />
           <h4 className={inter.className}>websites</h4>
           <a
             href="http://jermaine-fowler-site.s3-website-us-west-1.amazonaws.com"
@@ -59,6 +57,7 @@ export default function Home() {
           <a href="https://www.awge.com" className={inter.className}>
             AWGE, 2017
           </a>
+          <br />
           <h4 className={inter.className}>art</h4>
           <a
             href="https://assets.mediated.world/site/latent-explorer/wide-video.mp4"
@@ -75,6 +74,7 @@ export default function Home() {
           >
             Foundation, 2019
           </a>
+          <br />
           <h4 className={inter.className}>links</h4>
           <a href="https://twitter.com/_alexshortt" className={inter.className}>
             Twitter
