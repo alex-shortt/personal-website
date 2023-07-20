@@ -1,9 +1,9 @@
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -103,5 +103,72 @@ a {
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+}
+
+.work,
+.art,
+.startup,
+.learn {
+  position: relative;
+  padding-left: 4px;
+  margin-left: 10px;
+
+  &:after {
+    content: "";
+    // circle on the left
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-100%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+}
+
+.work {
+  &:after {
+    background: #ff007b;
+  }
+}
+
+.art {
+  &:after {
+    background: #00eeff;
+  }
+}
+
+.startup {
+  &:after {
+    background: #fb6518;
+  }
+}
+
+.learn {
+  &:after {
+    background: #75ce1c;
+  }
+}
+
+a {
+  position: relative;
+
+  &:hover {
+    &:before {
+      height: 1px;
+      opacity: 0.6;
+    }
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: calc(100% - 3px);
+    height: 0px;
+    background: black;
+    opacity: 0.3;
+    transition: all 0.15s ease-in-out;
   }
 }

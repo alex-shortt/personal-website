@@ -14,74 +14,78 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div className={styles.container}>
-          <h1 className={inter.className}>Alex Shortt</h1>
+        <div className={styles.container + " " + inter.className}>
+          <h1>Alex Shortt</h1>
           <br />
-          <br />
-          <h4 className={inter.className}>
+          <h4>
             Currently working on <a href="https://logicmap.com">logicmap.com</a>
           </h4>
           <br />
           <br />
-          <h4 className={inter.className}>organizations</h4>
+          <div>
+            <span className="art">art</span>&nbsp;&nbsp;&nbsp;
+            <span className="startup">startup</span>&nbsp;&nbsp;&nbsp;
+            <span className="learn">learn</span>&nbsp;&nbsp;&nbsp;
+            <span className="work">work</span>
+          </div>
+          <br />
+          <h4>Timeline</h4>
+          <a href="https://logicmap.com" className="art">
+            Logic Map, 2023
+          </a>
           <a
             href="https://www.ycombinator.com/companies/muse"
-            className={inter.className}
+            className="learn"
           >
-            Y Combinator, S21
+            Y Combinator S21, 2021
           </a>
-          <a href="https://www.muse.place" className={inter.className}>
-            Muse Place, '20-'23
+          <a href="https://www.muse.place" className="startup">
+            Muse, 2020-2023
           </a>
-          <p className={inter.className}>UC Santa Barbara, '18-'21</p>
-          <br />
-          <h4 className={inter.className}>websites</h4>
           <a
             href="http://jermaine-fowler-site.s3-website-us-west-1.amazonaws.com"
-            className={inter.className}
+            className="work"
           >
             Jermaine Fowler, 2020
           </a>
           <a
+            href="https://assets.mediated.world/site/latent-explorer/wide-video.mp4"
+            className="art"
+          >
+            Latent Explorer, 2020
+          </a>
+          <a
             href="http://smile.sashsite.com.s3-website-us-west-1.amazonaws.com/"
-            className={inter.className}
+            className="work"
           >
             Sash, 2019
           </a>
           <a
-            href="http://first-personal-site.s3-website-us-west-1.amazonaws.com/"
-            className={inter.className}
-          >
-            First personal site, 2018
-          </a>
-          <a href="https://www.awge.com" className={inter.className}>
-            AWGE, 2017
-          </a>
-          <br />
-          <h4 className={inter.className}>art</h4>
-          <a
-            href="https://assets.mediated.world/site/latent-explorer/wide-video.mp4"
-            className={inter.className}
-          >
-            Latent Explorer, 2020
-          </a>
-          <a href="https://trailer.mediated.world" className={inter.className}>
-            mediated.world Trailer, 2019
-          </a>
-          <a
             href="https://assets.mediated.world/site/foundation/inbed.mp4"
-            className={inter.className}
+            className="art"
           >
             Foundation, 2019
           </a>
+          <a href="https://trailer.mediated.world" className="art">
+            mediated.world Trailer, 2019
+          </a>
+          <p className="learn">UC Santa Barbara, 2018-2021</p>
+          <a
+            href="http://first-personal-site.s3-website-us-west-1.amazonaws.com/"
+            className="work"
+          >
+            First Personal Site, 2018
+          </a>
+          <a href="https://www.getinstadata.com/" className="startup">
+            Metaplug, 2017-2020
+          </a>
+          <a href="https://www.awge.com" className="work">
+            AWGE, 2017
+          </a>
           <br />
-          <h4 className={inter.className}>links</h4>
-          <a href="https://twitter.com/_alexshortt" className={inter.className}>
-            Twitter
-          </a>
-          <a href="https://github.com/alex-shortt" className={inter.className}>
-            Github
-          </a>
+          <h4>Links</h4>
+          <a href="https://twitter.com/_alexshortt">Twitter</a>
+          <a href="https://github.com/alex-shortt">Github</a>
         </div>
       </main>
     </>
