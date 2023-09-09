@@ -18,7 +18,8 @@ export default function Home() {
           <h1>Alex Shortt</h1>
           <br />
           <h4>
-            Currently working on <a href="https://logicmap.com">logicmap.com</a>
+            Currently working on{" "}
+            <a href="https://www.exportmama.com">Export Mama</a>
           </h4>
           <br />
           <br />
@@ -30,6 +31,9 @@ export default function Home() {
           </div>
           <br />
           <h4>Timeline</h4>
+          <a href="https://www.exportmama.com" className="startup">
+            Export Mama, 2023
+          </a>
           <a href="https://logicmap.com" className="art">
             Logic Map, 2023
           </a>
@@ -82,7 +86,10 @@ export default function Home() {
           <a href="https://www.awge.com" className="work">
             AWGE Website, 2017
           </a>
-          <a href="https://www.gta5-mods.com/scripts/portal-gun-net" className="art">
+          <a
+            href="https://www.gta5-mods.com/scripts/portal-gun-net"
+            className="art"
+          >
             GTAV Portal Gun Mod, 2015
           </a>
           <br />
