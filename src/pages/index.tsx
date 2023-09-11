@@ -27,7 +27,7 @@ export default function Home() {
             <span className="art">art</span>&nbsp;&nbsp;&nbsp;
             <span className="startup">startup</span>&nbsp;&nbsp;&nbsp;
             <span className="learn">learn</span>&nbsp;&nbsp;&nbsp;
-            <span className="work">work</span>
+            <span className="work">freelance</span>
           </div>
           <br />
           <h4>Timeline</h4>
