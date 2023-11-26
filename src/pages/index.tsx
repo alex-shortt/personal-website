@@ -8,14 +8,14 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Alex Shortt</title>
+        <title>Alexander Shortt</title>
         <meta name="description" content="hello" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
         <div className={styles.container + " " + inter.className}>
-          <h1>Alex Shortt</h1>
+          <h1>Alexander Shortt</h1>
           <br />
           <h4>
             Currently working on{" "}
