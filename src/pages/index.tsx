@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Inter } from "@next/font/google";
 import { useEffect, useRef, useState } from "react";
-import { cn } from "@/pages/cn";
+import { cn } from "@/logic/cn";
 import { createPortal } from "react-dom";
 
 const inter = Inter({ subsets: ["latin"] });
