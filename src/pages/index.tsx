@@ -185,7 +185,7 @@ export default function Home() {
       <main className="w-full h-full overflow-hidden overflow-y-auto">
         <div
           className={
-            "w-full max-w-md px-4 py-8 sm:py-12 md:py-48 mx-auto my-auto" +
+            "w-full max-w-md px-4 py-8 sm:py-12 md:py-20 mx-auto my-auto" +
             " " +
             inter.className
           }
