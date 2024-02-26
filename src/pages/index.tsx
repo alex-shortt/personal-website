@@ -37,6 +37,8 @@ type Entry = {
   | { date?: undefined; start: string; end: string | undefined }
 );
 
+const entryId = (e: Entry) => e.name.toLowerCase().replaceAll(" ", "-");
+
 const entries: Entry[] = [
   {
     name: "GTAV Portal Gun Mod",
@@ -272,6 +274,7 @@ function Entry({ entry }: { entry: Entry }) {
   const onClick = () => {
     switchAllow.current = false;
     setActive((active) => !active);
+    posthog.capture(`click-${entryId(entry)}`);
   };
 
   const [showCard, setShowCard] = useState(false);
@@ -442,8 +445,7 @@ function Card({ entry, active }: { entry: Entry; active: boolean }) {
               className="px-4 py-2 bg-gray-600 rounded-md text-[#fcfcfc] cursor-pointer hover:bg-gray-600/80 transition-all"
               onClick={() => {
                 window.open(entry.link, "_blank");
-                const id = entry.name.toLowerCase().replaceAll(" ", "-");
-                posthog.capture(`visit-${id}`);
+                posthog.capture(`visit-${entryId(entry)}`);
               }}
             >
               Visit
