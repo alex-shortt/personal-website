@@ -278,7 +278,7 @@ const left = (index: number) => {
   const left = `(${WIDTH / 2}px + ${PADDING_X}px)`;
   const right = `(100% - ${WIDTH / 2}px - ${PADDING_X}px)`;
   const perc = index / (NUM_COLUMNS - 1);
-  return `calc(${left} + (${right} - ${left}) * ${perc}`;
+  return `calc(${left} + (${right} - ${left}) * ${perc})`;
 };
 
 function Entry({ entry }: { entry: Entry }) {
@@ -313,6 +313,8 @@ function Entry({ entry }: { entry: Entry }) {
   useEffect(() => {
     setShowCard(true);
   }, []);
+
+  if (!showCard) return null;
 
   return (
     <>
