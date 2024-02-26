@@ -18,9 +18,10 @@ const COLOR: { [key in TYPE]: string } = {
 const START = new Date("2015-01-02");
 const END = new Date(); // now
 const SCALE = 900; // px
-const WIDTH = 12; // px
-const SPACE = 11; // %
-const MARGIN = 12; // px, for the dates
+const PADDING_X = 20; // px
+const WIDTH = 11; // px
+
+const NUM_COLUMNS = 4;
 
 type Entry = {
   name: string;
@@ -38,20 +39,23 @@ const entries: Entry[] = [
     name: "GTAV Portal Gun Mod",
     link: "https://www.gta5-mods.com/scripts/portal-gun-net",
     type: "art",
-    index: 3,
+    desc: "This was a triumph. I'm making a note here: HUGE SUCCESS.",
+    index: 2,
     date: "2015-07-05",
   },
   {
-    name: "awge.com",
+    name: "AWGE",
+    desc: "Creative Agency for A$AP Rocky, A$AP Ferg, and more",
     link: "https://www.awge.com",
     type: "work",
-    index: 4,
+    index: 3,
     date: "2017-08-07",
   },
   {
     name: "Metaplug",
     type: "startup",
     link: "https://www.getinstadata.com/",
+    desc: "Instagram data scraper and marketing agency",
     index: 1,
     start: "2017-11-01",
     end: "2020-08-01",
@@ -60,11 +64,12 @@ const entries: Entry[] = [
     name: "First Personal Website",
     link: "http://first-personal-site.s3-website-us-west-1.amazonaws.com/",
     type: "art",
-    index: 3,
+    index: 2,
     date: "2018-06-26",
   },
   {
     name: "UC Santa Barbara",
+    desc: "Computer Science Major, Philosophy Minor. Did not finish.",
     type: "learn",
     link: "https://www.ucsb.edu/",
     index: 0,
@@ -72,21 +77,24 @@ const entries: Entry[] = [
     end: "2021-04-29",
   },
   {
-    name: "Sash - Smile Website",
+    name: "SASH",
+    desc: "Singer, Songwriter",
     link: "http://smile.sashsite.com.s3-website-us-west-1.amazonaws.com/",
     type: "work",
-    index: 4,
+    index: 3,
     date: "2019-08-25",
   },
-  {
-    name: "Foundation",
-    link: "https://assets.mediated.world/site/foundation/inbed.mp4",
-    type: "art",
-    index: 3,
-    date: "2019-12-07",
-  },
+  // {
+  //   name: "Foundation",
+  //   link: "https://assets.mediated.world/site/foundation/inbed.mp4",
+  //   desc: "",
+  //   type: "art",
+  //   index: 3,
+  //   date: "2019-12-07",
+  // },
   {
     name: "mediated.world Trailer",
+    desc: "A depiction of entering mediated.world for the first time",
     link: "https://trailer.mediated.world",
     type: "art",
     index: 2,
@@ -94,21 +102,23 @@ const entries: Entry[] = [
   },
   {
     name: "Latent Explorer",
+    desc: "GAN trained on my Laptop",
     link: "https://assets.mediated.world/site/latent-explorer/wide-video.mp4",
     type: "art",
     index: 2,
     date: "2020-04-07",
   },
   {
-    name: "Jermaine Fowler Website",
+    name: "Jermaine Fowler",
+    desc: "Actor, Comedian, Producer, Writer",
     link: "http://jermaine-fowler-site.s3-website-us-west-1.amazonaws.com/",
     type: "work",
-    index: 4,
+    index: 3,
     date: "2020-05-20",
   },
   {
     name: "Muse",
-    desc: "Squarespace for 3D Worlds",
+    desc: "Website builder for 3D Worlds",
     type: "startup",
     link: "https://www.muse.place",
     index: 1,
@@ -134,6 +144,7 @@ const entries: Entry[] = [
   {
     name: "Export Mama",
     link: "https://www.exportmama.com/",
+    desc: "Platform for sourcing Vietnamese Apparel",
     type: "startup",
     index: 1,
     start: "2023-08-24",
@@ -142,12 +153,27 @@ const entries: Entry[] = [
   {
     name: "Logic Map",
     link: "https://www.logicmap.com/",
+    desc: "Platform for pursuing Truth",
     type: "art",
     index: 2,
     start: "2024-01-15",
     end: undefined,
   },
 ];
+
+declare global {
+  interface Window {
+    posthog: {
+      capture: (event: string, data?: any) => void;
+    };
+  }
+}
+
+const capture = (event: string, data?: any) => {
+  if (window.posthog) {
+    window.posthog.capture(event, data);
+  }
+};
 
 export default function Home() {
   return (
@@ -194,7 +220,11 @@ export default function Home() {
           <div className="my-8">
             <h4 className="text-lg font-semibold">
               Currently working on{" "}
-              <a href="https://www.logicmap.com" className="text-gray-500">
+              <a
+                href="https://www.logicmap.com"
+                className="text-gray-500"
+                onClick={() => capture("current-logic-map")}
+              >
                 Logic Map
               </a>
             </h4>
@@ -202,12 +232,14 @@ export default function Home() {
               <a
                 className="text-gray-500"
                 href="https://twitter.com/_alexshortt"
+                onClick={() => capture("twitter")}
               >
                 Twitter
               </a>
               <a
                 className="text-gray-500"
                 href="https://github.com/alex-shortt"
+                onClick={() => capture("github")}
               >
                 Github
               </a>
@@ -242,8 +274,12 @@ export default function Home() {
   );
 }
 
-const left = (index: number) =>
-  `calc(${index} * (${SPACE}% * 2) + ${MARGIN}px)`;
+const left = (index: number) => {
+  const left = `(${WIDTH / 2}px + ${PADDING_X}px)`;
+  const right = `(100% - ${WIDTH / 2}px - ${PADDING_X}px)`;
+  const perc = index / (NUM_COLUMNS - 1);
+  return `calc(${left} + (${right} - ${left}) * ${perc}`;
+};
 
 function Entry({ entry }: { entry: Entry }) {
   const [active, setActive] = useState(false);
@@ -333,7 +369,7 @@ function Point({
     <div
       onClick={onClick}
       className={cn(
-        "absolute left-0 -translate-x-1/2 -translate-y-1/2 rounded-full",
+        "absolute left-0 -translate-x-1/2 translate-y-1/2 rounded-full",
         className
       )}
       style={{
@@ -439,6 +475,8 @@ function Card({ entry, active }: { entry: Entry; active: boolean }) {
               className="px-4 py-2 bg-gray-600 rounded-md text-[#fcfcfc] cursor-pointer hover:bg-gray-600/80 transition-all"
               onClick={() => {
                 window.open(entry.link, "_blank");
+                const id = entry.name.toLowerCase().replaceAll(" ", "-");
+                capture(id);
               }}
             >
               Visit
