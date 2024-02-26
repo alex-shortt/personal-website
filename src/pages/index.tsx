@@ -1,19 +1,11 @@
+"use client";
+
 import Head from "next/head";
 import { Inter } from "@next/font/google";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/logic/cn";
 import { createPortal } from "react-dom";
 import posthog from "posthog-js";
-
-if (
-  typeof window !== "undefined" &&
-  !window.location.host.includes("127.0.0.1") &&
-  !window.location.host.includes("localhost")
-) {
-  posthog.init("phc_P5H8es69BaGFLoTwhgtGhixyXn5m4KFJiIYw4BZB33v", {
-    api_host: "https://app.posthog.com",
-  });
-}
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -451,7 +443,7 @@ function Card({ entry, active }: { entry: Entry; active: boolean }) {
               onClick={() => {
                 window.open(entry.link, "_blank");
                 const id = entry.name.toLowerCase().replaceAll(" ", "-");
-                posthog.capture(id);
+                posthog.capture(`visit-${id}`);
               }}
             >
               Visit
