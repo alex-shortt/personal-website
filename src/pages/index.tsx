@@ -3,6 +3,17 @@ import { Inter } from "@next/font/google";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/logic/cn";
 import { createPortal } from "react-dom";
+import posthog from "posthog-js";
+
+if (
+  typeof window !== "undefined" &&
+  !window.location.host.includes("127.0.0.1") &&
+  !window.location.host.includes("localhost")
+) {
+  posthog.init("phc_P5H8es69BaGFLoTwhgtGhixyXn5m4KFJiIYw4BZB33v", {
+    api_host: "https://app.posthog.com",
+  });
+}
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -161,48 +172,10 @@ const entries: Entry[] = [
   },
 ];
 
-declare global {
-  interface Window {
-    posthog: {
-      capture: (event: string, data?: any) => void;
-    };
-  }
-}
-
-const capture = (event: string, data?: any) => {
-  if (window.posthog) {
-    window.posthog.capture(event, data);
-  }
-};
-
 export default function Home() {
   return (
     <>
       <Head>
-        <script>
-          {`!function (t, e) {
-            var o, n, p, r;
-            e.__SV || (window.posthog = e, e._i = [], e.init = function (i, s, a) {
-              function g(t, e) {
-                var o = e.split(".");
-                2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () {
-                  t.push([e].concat(Array.prototype.slice.call(arguments, 0)))
-                }
-              }
-
-              (p = t.createElement("script")).type = "text/javascript", p.async = !0, p.src = s.api_host + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r);
-              var u = e;
-              for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) {
-                var e = "posthog";
-                return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e
-              }, u.people.toString = function () {
-                return u.toString(1) + ".people (stub)"
-              }, o = "capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "), n = 0; n < o.length; n++) g(u, o[n]);
-              e._i.push([i, s, a])
-            }, e.__SV = 1)
-          }(document, window.posthog || []);
-            posthog.init('phc_P5H8es69BaGFLoTwhgtGhixyXn5m4KFJiIYw4BZB33v',{api_host:'https://app.posthog.com'})`}
-        </script>
         <title>Alexander Shortt</title>
         <meta name="description" content="hello" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -223,7 +196,7 @@ export default function Home() {
               <a
                 href="https://www.logicmap.com"
                 className="text-gray-500"
-                onClick={() => capture("current-logic-map")}
+                onClick={() => posthog.capture("current-logic-map")}
               >
                 Logic Map
               </a>
@@ -232,14 +205,14 @@ export default function Home() {
               <a
                 className="text-gray-500"
                 href="https://twitter.com/_alexshortt"
-                onClick={() => capture("twitter")}
+                onClick={() => posthog.capture("twitter")}
               >
                 Twitter
               </a>
               <a
                 className="text-gray-500"
                 href="https://github.com/alex-shortt"
-                onClick={() => capture("github")}
+                onClick={() => posthog.capture("github")}
               >
                 Github
               </a>
@@ -478,7 +451,7 @@ function Card({ entry, active }: { entry: Entry; active: boolean }) {
               onClick={() => {
                 window.open(entry.link, "_blank");
                 const id = entry.name.toLowerCase().replaceAll(" ", "-");
-                capture(id);
+                posthog.capture(id);
               }}
             >
               Visit
