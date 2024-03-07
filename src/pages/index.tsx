@@ -107,7 +107,7 @@ const entries: Entry[] = [
   },
   {
     name: "Latent Explorer",
-    desc: "GAN trained on my Laptop",
+    desc: "GAN trained on images of the beach",
     link: "https://assets.mediated.world/site/latent-explorer/wide-video.mp4",
     type: "art",
     index: 2,
@@ -163,6 +163,34 @@ const entries: Entry[] = [
     index: 2,
     start: "2024-01-15",
     end: undefined,
+  },
+  {
+    name: "[Mix 001] It's Always Been You",
+    link: "https://soundcloud.com/alex_shortt/mix-001",
+    type: "art",
+    index: 2,
+    date: "2017-03-13",
+  },
+  {
+    name: "[Mix 002] I Want To Be Like You",
+    link: "https://soundcloud.com/alex_shortt/mix-002",
+    type: "art",
+    index: 2,
+    date: "2017-11-04",
+  },
+  {
+    name: "[Mix 003] I Want It To Just Be Me And You",
+    link: "https://soundcloud.com/alex_shortt/mix-003",
+    type: "art",
+    index: 2,
+    date: "2019-03-03",
+  },
+  {
+    name: "[Mix 004] I Want to Find You",
+    link: "https://soundcloud.com/alex_shortt/mix-004",
+    type: "art",
+    index: 2,
+    date: "2022-04-04",
   },
 ];
 
