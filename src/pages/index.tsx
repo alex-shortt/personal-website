@@ -19,7 +19,7 @@ const COLOR: { [key in TYPE]: string } = {
 };
 
 const START = new Date("2015-01-02");
-const END = new Date(); // now
+const END = () => new Date(); // now
 const SCALE = 900; // px
 const PADDING_X = 20; // px
 const WIDTH = 11; // px
@@ -338,12 +338,12 @@ function Entry({ entry }: { entry: Entry }) {
 }
 
 const getDateY = (date: Date) =>
-  (date.getTime() - START.getTime()) / (END.getTime() - START.getTime());
+  (date.getTime() - START.getTime()) / (END().getTime() - START.getTime());
 const getDateRangeY = (start: Date, end: Date) => {
   const height =
-    (end.getTime() - start.getTime()) / (END.getTime() - START.getTime());
+    (end.getTime() - start.getTime()) / (END().getTime() - START.getTime());
   const midy =
-    (start.getTime() - START.getTime()) / (END.getTime() - START.getTime()) -
+    (start.getTime() - START.getTime()) / (END().getTime() - START.getTime()) -
     height / 2;
   return { height, midy };
 };
@@ -420,7 +420,7 @@ function Line({
 function Lines() {
   // mark the first of every year
   const dates = [];
-  for (let year = START.getFullYear(); year <= END.getFullYear(); year++) {
+  for (let year = START.getFullYear(); year <= END().getFullYear(); year++) {
     dates.push(new Date(`${year}-01-01 00:00:01`));
   }
 
@@ -429,7 +429,7 @@ function Lines() {
       {dates.map((date, i) => {
         const y =
           (date.getTime() - START.getTime()) /
-          (END.getTime() - START.getTime());
+          (END().getTime() - START.getTime());
         const ypx = y * SCALE;
         return (
           <hr
@@ -532,7 +532,7 @@ function Card({ entry, active }: { entry: Entry; active: boolean }) {
 function Dates() {
   // mark the first of every year
   const dates = [];
-  for (let year = START.getFullYear(); year <= END.getFullYear(); year++) {
+  for (let year = START.getFullYear(); year <= END().getFullYear(); year++) {
     dates.push(new Date(`${year}-01-01 00:00:01`));
   }
 
@@ -545,7 +545,7 @@ function Dates() {
       {dates.map((date, i) => {
         const y =
           (date.getTime() - START.getTime()) /
-          (END.getTime() - START.getTime());
+          (END().getTime() - START.getTime());
         const ypx = y * SCALE;
         return (
           <div
