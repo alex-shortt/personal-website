@@ -139,7 +139,7 @@ const entries: Entry[] = [
     end: "2021-09-01",
   },
   {
-    name: "Follow Jesus Christ",
+    name: "Follow Jesus",
     type: "faith",
     index: 0,
     // https://github.com/alex-shortt/basis-language/blob/4ee579bf099c3d4ffc921d9aa29e8da659812e95/3_stories/personals/personal%20purpose%20hierarchy.md
@@ -162,6 +162,15 @@ const entries: Entry[] = [
     type: "art",
     index: 2,
     start: "2024-01-15",
+    end: "2024-10-14",
+  },
+  {
+    name: "Swift Systems",
+    link: "https://www.swiftsystems.ai/",
+    desc: "Operating Platform for Aero/Defense Manufacturing",
+    type: "startup",
+    index: 1,
+    start: "2024-10-14",
     end: undefined,
   },
   {
