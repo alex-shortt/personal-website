@@ -225,11 +225,11 @@ export default function Home() {
             <h4 className="text-lg font-semibold">
               Currently working on{" "}
               <a
-                href="https://www.logicmap.com"
+                href="https://www.swiftsystems.ai"
                 className="text-gray-500"
-                onClick={() => posthog.capture("current-logic-map")}
+                onClick={() => posthog.capture("current-swift-systems")}
               >
-                Logic Map
+                Swift Systems
               </a>
             </h4>
             <div className="flex gap-2">
