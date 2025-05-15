@@ -20,6 +20,8 @@ const COLOR: { [key in TYPE]: string } = {
 
 export const dynamic = "force-dynamic";
 
+
+
 const START = new Date("2015-01-02");
 const END = () => new Date(); // now
 const SCALE = 900; // px
