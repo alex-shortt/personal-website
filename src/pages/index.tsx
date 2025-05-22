@@ -20,7 +20,8 @@ const COLOR: { [key in TYPE]: string } = {
 
 export const dynamic = "force-dynamic";
 
-
+// code to cause a cache bust
+const cacheBust = new Date().getTime();
 
 const START = new Date("2015-01-02");
 const END = () => new Date(); // now
