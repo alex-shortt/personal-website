@@ -23,9 +23,9 @@ export const dynamic = "force-dynamic";
 // code to cause a cache bust
 const cacheBust = new Date().getTime();
 
-const START = new Date("2015-01-02");
+const START = new Date("2000-03-28");
 const END = () => new Date(); // now
-const SCALE = 900; // px
+const SCALE = 2000; // px
 const PADDING_X = 20; // px
 const WIDTH = 11; // px
 
@@ -93,6 +93,14 @@ const entries: Entry[] = [
     type: "work",
     index: 3,
     date: "2019-08-25",
+  },
+  {
+    name: "Mini Weapons & Co.",
+    desc: "Built and sold mini weapons of mass destruction to classmates",
+    type: "startup",
+    index: 1,
+    start: "2011-01-30",
+    end: "2011-04-25",
   },
   // {
   //   name: "Foundation",
@@ -172,11 +180,11 @@ const entries: Entry[] = [
   {
     name: "Swift Systems",
     link: "https://www.swiftsystems.ai/",
-    desc: "Operating Platform for Aero/Defense Manufacturing",
+    desc: "ERP for Aerospace / Defense Manufacturing",
     type: "startup",
     index: 1,
     start: "2024-10-14",
-    end: undefined,
+    end: "2025-05-28",
   },
   {
     name: "[Mix 001] It's Always Been You",
@@ -228,14 +236,7 @@ export default function Home() {
           <h1 className="text-3xl font-bold">Alexander Shortt</h1>
           <div className="my-8">
             <h4 className="text-lg font-semibold">
-              Currently working on{" "}
-              <a
-                href="https://www.swiftsystems.ai"
-                className="text-gray-500"
-                onClick={() => posthog.capture("current-swift-systems")}
-              >
-                Swift Systems
-              </a>
+              Currently figuring out what I care about
             </h4>
             <div className="flex gap-2">
               <a
