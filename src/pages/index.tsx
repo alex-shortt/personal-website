@@ -187,6 +187,14 @@ const entries: Entry[] = [
     end: "2025-05-28",
   },
   {
+    name: "Revenge x Storm",
+    link: "https://www.revengexstorm.com/",
+    desc: "Shoe brand created by Ian Connor",
+    type: "work",
+    index: 3,
+    date: "2016-12-01",
+  },
+  {
     name: "[Mix 001] It's Always Been You",
     link: "https://soundcloud.com/alex_shortt/mix-001",
     type: "art",
