@@ -169,6 +169,14 @@ const entries: Entry[] = [
     end: "2024-01-14",
   },
   {
+    name: "The Creature Finds Its Voice",
+    link: "https://muse-world-creatureworld.vercel.app/",
+    desc: "3D World for Creature World",
+    type: "art",
+    index: 2,
+    date: "2021-12-22",
+  },
+  {
     name: "Logic Map",
     link: "https://www.logicmap.com/",
     desc: "Platform for pursuing Truth",
