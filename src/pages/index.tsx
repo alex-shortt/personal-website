@@ -25,7 +25,7 @@ const cacheBust = new Date().getTime();
 
 const START = new Date("2000-03-28");
 const END = () => new Date(); // now
-const SCALE = 2000; // px
+const SCALE = 1400; // px
 const PADDING_X = 20; // px
 const WIDTH = 11; // px
 
@@ -252,7 +252,7 @@ export default function Home() {
           <h1 className="text-3xl font-bold">Alexander Shortt</h1>
           <div className="my-8">
             <h4 className="text-lg font-semibold">
-              Currently figuring out what I care about
+              Putting thought into my next adventure
             </h4>
             <div className="flex gap-2">
               <a
@@ -269,13 +269,20 @@ export default function Home() {
               >
                 Github
               </a>
+              <a
+                className="text-gray-500"
+                href="https://www.are.na/alex-shortt/channels"
+                onClick={() => posthog.capture("are.na")}
+              >
+                Are.na
+              </a>
             </div>
           </div>
           <div className="flex flex-wrap gap-y-1 gap-x-2">
             <div className="faith">faith</div>
-            <div className="art">art</div>
-            <div className="startup">startup</div>
             <div className="learn">learn</div>
+            <div className="startup">startup</div>
+            <div className="art">art</div>
             <div className="work">freelance</div>
           </div>
           <br />
@@ -356,7 +363,7 @@ function Entry({ entry }: { entry: Entry }) {
       ) : entry.start ? (
         <Line
           start={new Date(entry.start)}
-          end={entry.end ? new Date(entry.end) : new Date()}
+          end={entry.end ? new Date(entry.end) : undefined}
           type={entry.type}
           index={entry.index}
           onClick={onClick}
@@ -421,20 +428,21 @@ function Line({
   onClick,
 }: {
   start: Date;
-  end: Date;
+  end: Date | undefined;
   index: number;
   type: TYPE;
   className?: string;
   onClick?: () => void;
 }) {
-  const { height, midy } = getDateRangeY(start, end);
+  const { height, midy } = getDateRangeY(start, end || new Date());
   const ypx = midy * SCALE;
   const heightpx = height * SCALE;
   return (
     <div
       onClick={onClick}
       className={cn(
-        `absolute left-0 -translate-x-1/2 -translate-y-1/2 w-2 rounded-full`,
+        `absolute left-0 -translate-x-1/2 -translate-y-1/2 w-2 rounded-b-full`,
+        end !== undefined && "rounded-t-full",
         className
       )}
       style={{
