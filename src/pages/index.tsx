@@ -9,13 +9,14 @@ import posthog from "posthog-js";
 
 const inter = Inter({ subsets: ["latin"] });
 
-type TYPE = "faith" | "art" | "startup" | "learn" | "work";
+type TYPE = "faith" | "art" | "venture" | "learn" | "commission" | "company";
 const COLOR: { [key in TYPE]: string } = {
   faith: "#9871d8",
   art: "#00eeff",
-  startup: "#fb6518",
+  venture: "#fb6518",
   learn: "#75ce1c",
-  work: "#ff007b",
+  commission: "#ff007b",
+  company: "#d0bc04",
 };
 
 export const dynamic = "force-dynamic";
@@ -25,9 +26,9 @@ const cacheBust = new Date().getTime();
 
 const START = new Date("2000-03-28");
 const END = () => new Date(); // now
-const SCALE = 1400; // px
+const SCALE = 1600; // px
 const PADDING_X = 20; // px
-const WIDTH = 11; // px
+const WIDTH = 13; // px
 
 const NUM_COLUMNS = 4;
 
@@ -57,13 +58,13 @@ const entries: Entry[] = [
     name: "AWGE",
     desc: "Creative Agency for A$AP Rocky, A$AP Ferg, and more",
     link: "https://www.awge.com",
-    type: "work",
+    type: "commission",
     index: 3,
     date: "2017-08-07",
   },
   {
     name: "Metaplug",
-    type: "startup",
+    type: "venture",
     link: "https://www.getinstadata.com/",
     desc: "Instagram data scraper and marketing agency",
     index: 1,
@@ -90,14 +91,14 @@ const entries: Entry[] = [
     name: "SASH",
     desc: "Singer, Songwriter",
     link: "http://smile.sashsite.com.s3-website-us-west-1.amazonaws.com/",
-    type: "work",
+    type: "commission",
     index: 3,
     date: "2019-08-25",
   },
   {
     name: "Mini Weapons & Co.",
     desc: "Built and sold mini weapons of mass destruction to classmates",
-    type: "startup",
+    type: "venture",
     index: 1,
     start: "2011-01-30",
     end: "2011-04-25",
@@ -130,14 +131,14 @@ const entries: Entry[] = [
     name: "Jermaine Fowler",
     desc: "Actor, Comedian, Producer, Writer",
     link: "http://jermaine-fowler-site.s3-website-us-west-1.amazonaws.com/",
-    type: "work",
+    type: "commission",
     index: 3,
     date: "2020-05-20",
   },
   {
     name: "Muse",
     desc: "Website builder for 3D Worlds",
-    type: "startup",
+    type: "venture",
     link: "https://www.muse.place",
     index: 1,
     start: "2020-08-01",
@@ -163,7 +164,7 @@ const entries: Entry[] = [
     name: "Export Mama",
     link: "https://www.exportmama.com/",
     desc: "Platform for sourcing Vietnamese Apparel",
-    type: "startup",
+    type: "venture",
     index: 1,
     start: "2023-08-24",
     end: "2024-01-14",
@@ -189,7 +190,7 @@ const entries: Entry[] = [
     name: "Swift Systems",
     link: "https://www.swiftsystems.ai/",
     desc: "ERP for Aerospace / Defense Manufacturing",
-    type: "startup",
+    type: "venture",
     index: 1,
     start: "2024-10-14",
     end: "2025-05-28",
@@ -198,7 +199,7 @@ const entries: Entry[] = [
     name: "Revenge x Storm",
     link: "https://www.revengexstorm.com/",
     desc: "Shoe brand created by Ian Connor",
-    type: "work",
+    type: "commission",
     index: 3,
     date: "2016-12-01",
   },
@@ -230,6 +231,14 @@ const entries: Entry[] = [
     index: 2,
     date: "2022-04-04",
   },
+  {
+    name: "World Labs",
+    link: "https://worldlabs.ai",
+    type: "company",
+    index: 3,
+    start: "2025-08-18",
+    end: undefined,
+  },
 ];
 
 export default function Home() {
@@ -250,38 +259,42 @@ export default function Home() {
           }
         >
           <h1 className="text-3xl font-bold">Alexander Shortt</h1>
-          <div className="my-8">
-            <h4 className="text-lg font-semibold">Restoring beauty and order</h4>
-            <div className="flex gap-2">
-              <a
-                className="text-gray-500"
-                href="https://twitter.com/_alexshortt"
-                onClick={() => posthog.capture("twitter")}
-              >
-                Twitter
-              </a>
-              <a
-                className="text-gray-500"
-                href="https://github.com/alex-shortt"
-                onClick={() => posthog.capture("github")}
-              >
-                Github
-              </a>
-              <a
-                className="text-gray-500"
-                href="https://www.are.na/alex-shortt/channels"
-                onClick={() => posthog.capture("are.na")}
-              >
-                Are.na
-              </a>
-            </div>
+          <h5 className="text-base italic">Restoring beauty and order</h5>
+          <div className="flex gap-2">
+            <a
+              className="text-gray-500"
+              href="https://twitter.com/_alexshortt"
+              onClick={() => posthog.capture("twitter")}
+            >
+              Twitter
+            </a>
+            <a
+              className="text-gray-500"
+              href="https://github.com/alex-shortt"
+              onClick={() => posthog.capture("github")}
+            >
+              Github
+            </a>
+            <a
+              className="text-gray-500"
+              href="https://www.are.na/alex-shortt/channels"
+              onClick={() => posthog.capture("are.na")}
+            >
+              Are.na
+            </a>
           </div>
-          <div className="flex flex-wrap gap-y-1 gap-x-2">
+          <div className="mt-8 mb-2">
+            <h4 className="text-lg font-semibold">
+              Currently working at <a href="https://worldlabs.ai">World Labs</a>
+            </h4>
+          </div>
+          <div className="flex flex-wrap gap-y-1 gap-x-4">
             <div className="faith">faith</div>
             <div className="learn">learn</div>
-            <div className="startup">startup</div>
+            <div className="venture">venture</div>
             <div className="art">art</div>
-            <div className="work">freelance</div>
+            <div className="commission">commission</div>
+            <div className="company">company</div>
           </div>
           <br />
           <div

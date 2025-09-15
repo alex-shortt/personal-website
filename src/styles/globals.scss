@@ -31,10 +31,11 @@ a {
 }
 
 .faith,
-.work,
 .art,
-.startup,
-.learn {
+.venture,
+.learn,
+.commission,
+.company {
   position: relative;
   padding-left: 4px;
   margin-left: 10px;
@@ -58,7 +59,7 @@ a {
   }
 }
 
-.work {
+.commission {
   &:after {
     background: #ff007b;
   }
@@ -70,7 +71,7 @@ a {
   }
 }
 
-.startup {
+.venture {
   &:after {
     background: #fb6518;
   }
@@ -79,6 +80,12 @@ a {
 .learn {
   &:after {
     background: #75ce1c;
+  }
+}
+
+.company {
+  &:after {
+    background: #d0bc04;
   }
 }
 
