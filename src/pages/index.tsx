@@ -6,23 +6,47 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/logic/cn";
 import { createPortal } from "react-dom";
 import posthog from "posthog-js";
+import Markdown from "react-markdown";
+// @ts-ignore
+import helloWorld from "../essays/hello-world.md";
+
+type Essay = {
+  title: string;
+  date: string;
+  content: string;
+};
+
+const essays: Essay[] = [
+  {
+    title: "Hello World",
+    date: "2025-10-12",
+    content: helloWorld,
+  },
+];
 
 const inter = Inter({ subsets: ["latin"] });
 
 type TYPE = "faith" | "art" | "venture" | "learn" | "commission" | "company";
+
 const COLOR: { [key in TYPE]: string } = {
   faith: "#9871d8",
   art: "#00eeff",
   venture: "#fb6518",
   learn: "#75ce1c",
   commission: "#ff007b",
-  company: "#d0bc04",
+  company: "#f4a535",
+};
+
+const TYPE_INDEX: { [key in TYPE]: number } = {
+  faith: 0,
+  learn: 1,
+  art: 2,
+  venture: 3,
+  commission: 4,
+  company: 5,
 };
 
 export const dynamic = "force-dynamic";
-
-// code to cause a cache bust
-const cacheBust = new Date().getTime();
 
 const START = new Date("2000-03-28");
 const END = () => new Date(); // now
@@ -30,12 +54,11 @@ const SCALE = 1600; // px
 const PADDING_X = 20; // px
 const WIDTH = 13; // px
 
-const NUM_COLUMNS = 4;
+const NUM_COLUMNS = 6;
 
 type Entry = {
   name: string;
   type: TYPE;
-  index: number;
   link?: string;
   desc?: string;
 } & (
@@ -44,14 +67,12 @@ type Entry = {
 );
 
 const entryId = (e: Entry) => e.name.toLowerCase().replaceAll(" ", "-");
-
 const entries: Entry[] = [
   {
     name: "GTAV Portal Gun Mod",
     link: "https://www.gta5-mods.com/scripts/portal-gun-net",
     type: "art",
     desc: "This was a triumph. I'm making a note here: HUGE SUCCESS.",
-    index: 2,
     date: "2015-07-05",
   },
   {
@@ -59,7 +80,6 @@ const entries: Entry[] = [
     desc: "Creative Agency for A$AP Rocky, A$AP Ferg, and more",
     link: "https://www.awge.com",
     type: "commission",
-    index: 3,
     date: "2017-08-07",
   },
   {
@@ -67,7 +87,6 @@ const entries: Entry[] = [
     type: "venture",
     link: "https://www.getinstadata.com/",
     desc: "Instagram data scraper and marketing agency",
-    index: 1,
     start: "2017-11-01",
     end: "2020-08-01",
   },
@@ -75,7 +94,6 @@ const entries: Entry[] = [
     name: "First Personal Website",
     link: "http://first-personal-site.s3-website-us-west-1.amazonaws.com/",
     type: "art",
-    index: 2,
     date: "2018-06-26",
   },
   {
@@ -83,7 +101,6 @@ const entries: Entry[] = [
     desc: "Computer Science Major, Philosophy Minor. Did not finish.",
     type: "learn",
     link: "https://www.ucsb.edu/",
-    index: 0,
     start: "2018-08-10",
     end: "2021-04-29",
   },
@@ -92,31 +109,20 @@ const entries: Entry[] = [
     desc: "Singer, Songwriter",
     link: "http://smile.sashsite.com.s3-website-us-west-1.amazonaws.com/",
     type: "commission",
-    index: 3,
     date: "2019-08-25",
   },
   {
     name: "Mini Weapons & Co.",
     desc: "Built and sold mini weapons of mass destruction to classmates",
     type: "venture",
-    index: 1,
     start: "2011-01-30",
     end: "2011-04-25",
   },
-  // {
-  //   name: "Foundation",
-  //   link: "https://assets.mediated.world/site/foundation/inbed.mp4",
-  //   desc: "",
-  //   type: "art",
-  //   index: 3,
-  //   date: "2019-12-07",
-  // },
   {
     name: "mediated.world Trailer",
     desc: "A depiction of entering mediated.world for the first time",
     link: "https://trailer.mediated.world",
     type: "art",
-    index: 2,
     date: "2019-12-12",
   },
   {
@@ -124,7 +130,6 @@ const entries: Entry[] = [
     desc: "GAN trained on images of the beach",
     link: "https://assets.mediated.world/site/latent-explorer/wide-video.mp4",
     type: "art",
-    index: 2,
     date: "2020-04-07",
   },
   {
@@ -132,7 +137,6 @@ const entries: Entry[] = [
     desc: "Actor, Comedian, Producer, Writer",
     link: "http://jermaine-fowler-site.s3-website-us-west-1.amazonaws.com/",
     type: "commission",
-    index: 3,
     date: "2020-05-20",
   },
   {
@@ -140,7 +144,6 @@ const entries: Entry[] = [
     desc: "Website builder for 3D Worlds",
     type: "venture",
     link: "https://www.muse.place",
-    index: 1,
     start: "2020-08-01",
     end: "2023-07-01",
   },
@@ -148,14 +151,18 @@ const entries: Entry[] = [
     name: "Y Combinator S21",
     link: "https://www.ycombinator.com/",
     type: "learn",
-    index: 0,
     start: "2021-07-01",
     end: "2021-09-01",
   },
   {
+    name: "The Hamilton Society",
+    type: "art",
+    start: "2025-03-01",
+    end: undefined,
+  },
+  {
     name: "Follow Jesus",
     type: "faith",
-    index: 0,
     // https://github.com/alex-shortt/basis-language/blob/4ee579bf099c3d4ffc921d9aa29e8da659812e95/3_stories/personals/personal%20purpose%20hierarchy.md
     start: "2023-06-04",
     end: undefined,
@@ -165,7 +172,6 @@ const entries: Entry[] = [
     link: "https://www.exportmama.com/",
     desc: "Platform for sourcing Vietnamese Apparel",
     type: "venture",
-    index: 1,
     start: "2023-08-24",
     end: "2024-01-14",
   },
@@ -174,7 +180,6 @@ const entries: Entry[] = [
     link: "https://muse-world-creatureworld.vercel.app/",
     desc: "3D World for Creature World",
     type: "art",
-    index: 2,
     date: "2021-12-22",
   },
   {
@@ -182,7 +187,6 @@ const entries: Entry[] = [
     link: "https://www.logicmap.com/",
     desc: "Platform for pursuing Truth",
     type: "art",
-    index: 2,
     start: "2024-01-15",
     end: "2024-10-14",
   },
@@ -191,7 +195,6 @@ const entries: Entry[] = [
     link: "https://www.swiftsystems.ai/",
     desc: "ERP for Aerospace / Defense Manufacturing",
     type: "venture",
-    index: 1,
     start: "2024-10-14",
     end: "2025-05-28",
   },
@@ -200,48 +203,52 @@ const entries: Entry[] = [
     link: "https://www.revengexstorm.com/",
     desc: "Shoe brand created by Ian Connor",
     type: "commission",
-    index: 3,
     date: "2016-12-01",
   },
   {
     name: "[Mix 001] It's Always Been You",
     link: "https://soundcloud.com/alex_shortt/mix-001",
     type: "art",
-    index: 2,
     date: "2017-03-13",
   },
   {
     name: "[Mix 002] I Want To Be Like You",
     link: "https://soundcloud.com/alex_shortt/mix-002",
     type: "art",
-    index: 2,
     date: "2017-11-04",
   },
   {
     name: "[Mix 003] I Want It To Just Be Me And You",
     link: "https://soundcloud.com/alex_shortt/mix-003",
     type: "art",
-    index: 2,
     date: "2019-03-03",
   },
   {
     name: "[Mix 004] I Want to Find You",
     link: "https://soundcloud.com/alex_shortt/mix-004",
     type: "art",
-    index: 2,
     date: "2022-04-04",
   },
   {
     name: "World Labs",
     link: "https://worldlabs.ai",
     type: "company",
-    index: 3,
     start: "2025-08-18",
     end: undefined,
   },
+  {
+    name: "Vixat",
+    desc: "My first website.",
+    type: "art",
+    date: "2009-08-18",
+  },
 ];
 
+type Tab = "actions" | "ideas";
+
 export default function Home() {
+  const [tab, setTab] = useState<Tab>("actions");
+
   return (
     <>
       <Head>
@@ -253,68 +260,168 @@ export default function Home() {
       <main className="w-full h-full overflow-hidden overflow-y-auto">
         <div
           className={
-            "w-full max-w-md px-4 py-8 sm:py-12 md:py-20 mx-auto my-auto" +
+            "w-full max-w-md px-4 py-8 sm:py-12 md:py-16 mx-auto my-auto" +
             " " +
             inter.className
           }
         >
-          <h1 className="text-3xl font-bold">Alexander Shortt</h1>
-          <h5 className="text-base italic">Restoring beauty and order</h5>
-          <div className="flex gap-2">
-            <a
-              className="text-gray-500"
-              href="https://twitter.com/_alexshortt"
-              onClick={() => posthog.capture("twitter")}
-            >
-              Twitter
-            </a>
-            <a
-              className="text-gray-500"
-              href="https://github.com/alex-shortt"
-              onClick={() => posthog.capture("github")}
-            >
-              Github
-            </a>
-            <a
-              className="text-gray-500"
-              href="https://www.are.na/alex-shortt/channels"
-              onClick={() => posthog.capture("are.na")}
-            >
-              Are.na
-            </a>
-          </div>
-          <div className="mt-8 mb-2">
-            <h4 className="text-lg font-semibold">
-              Currently working at <a href="https://worldlabs.ai">World Labs</a>
-            </h4>
-          </div>
-          <div className="flex flex-wrap gap-y-1 gap-x-4">
-            <div className="faith">faith</div>
-            <div className="learn">learn</div>
-            <div className="venture">venture</div>
-            <div className="art">art</div>
-            <div className="commission">commission</div>
-            <div className="company">company</div>
-          </div>
-          <br />
-          <div
-            className="w-full relative flex mb-16 "
-            style={{ height: `${SCALE}px` }}
-          >
-            <div className="w-14 relative">
-              <Dates />
-            </div>
-            <div className="flex-1 relative">
-              <Lines />
-              <hr className="border-dashed" />
-              {entries.map((entry) => (
-                <Entry key={entry.name} entry={entry} />
-              ))}
+          <div className="flex gap-6 items-center">
+            <img src="pfp-transparent-cropped.png" className="w-24 sm:w-32" />
+            <div>
+              <h1 className="text-2xl sm:text-2xl font-bold">
+                Alexander Shortt
+              </h1>
+              <h5 className="text-base italic">Restoring beauty and order</h5>
+              <div className="flex gap-2">
+                <a
+                  className="text-gray-500"
+                  href="https://twitter.com/_alexshortt"
+                  onClick={() => posthog.capture("twitter")}
+                >
+                  Twitter
+                </a>
+                <a
+                  className="text-gray-500"
+                  href="https://github.com/alex-shortt"
+                  onClick={() => posthog.capture("github")}
+                >
+                  Github
+                </a>
+                <a
+                  className="text-gray-500"
+                  href="https://www.are.na/alex-shortt/channels"
+                  onClick={() => posthog.capture("are.na")}
+                >
+                  Are.na
+                </a>
+              </div>
             </div>
           </div>
+          <div className="border-b-2 border-gray-600 mt-10 flex gap-0">
+            <button
+              onClick={() => setTab("actions")}
+              className={cn(
+                "text-lg w-24",
+                tab === "actions" && "text-white bg-gray-600"
+              )}
+            >
+              Actions
+            </button>
+            <button
+              onClick={() => setTab("ideas")}
+              className={cn(
+                "text-lg w-24",
+                tab === "ideas" && "text-white bg-gray-600"
+              )}
+            >
+              Ideas
+            </button>
+          </div>
+          {tab === "actions" && <Actions />}
+          {tab === "ideas" && <Ideas />}
         </div>
       </main>
     </>
+  );
+}
+
+function Actions() {
+  return (
+    <>
+      <div className="flex flex-wrap gap-y-1 gap-x-4 mt-4">
+        <div className="faith">faith</div>
+        <div className="learn">learn</div>
+        <div className="art">art</div>
+        <div className="venture">venture</div>
+        <div className="commission">commission</div>
+        <div className="company">company</div>
+      </div>
+      <br />
+      <div
+        className="w-full relative flex mb-16 "
+        style={{ height: `${SCALE}px` }}
+      >
+        <div className="w-14 relative">
+          <Dates />
+        </div>
+        <div className="flex-1 relative">
+          <Lines />
+          <hr className="border-dashed" />
+          {entries.map((entry) => (
+            <Entry key={entry.name} entry={entry} />
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+function Ideas() {
+  const [activeEssay, setActiveEssay] = useState<Essay | null>(null);
+
+  if (activeEssay) {
+    return (
+      <div className="mt-4 p-2">
+        <div className="pb-1 border-b border-gray-600">
+          <button className="text-sm" onClick={() => setActiveEssay(null)}>
+            Back
+          </button>
+          <h4 className="text-lg font-bold">{activeEssay.title}</h4>
+          <p className="text-sm">
+            {new Date(activeEssay.date).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </p>
+        </div>
+        <div className="prose mt-4 whitespace-pre-wrap">
+          <Markdown>{activeEssay.content}</Markdown>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      {essays.map((essay) => (
+        <EssayCard
+          key={essay.title}
+          essay={essay}
+          active={activeEssay === essay}
+          onClick={() => setActiveEssay(essay)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function EssayCard({
+  essay,
+  active,
+  onClick,
+}: {
+  essay: Essay;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <div
+      className={cn(
+        "hover:bg-gray-600/10 p-2 mt-4 cursor-default",
+        active && "bg-gray-600/10"
+      )}
+      onClick={onClick}
+    >
+      <h4 className="text-lg">{essay.title}</h4>
+      <p className="text-sm">
+        {new Date(essay.date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </p>
+    </div>
   );
 }
 
@@ -366,7 +473,7 @@ function Entry({ entry }: { entry: Entry }) {
       {entry.date ? (
         <Point
           date={new Date(entry.date)}
-          index={entry.index}
+          index={TYPE_INDEX[entry.type]}
           type={entry.type}
           className={className}
           onClick={onClick}
@@ -376,7 +483,7 @@ function Entry({ entry }: { entry: Entry }) {
           start={new Date(entry.start)}
           end={entry.end ? new Date(entry.end) : undefined}
           type={entry.type}
-          index={entry.index}
+          index={TYPE_INDEX[entry.type]}
           onClick={onClick}
           className={className}
         />
@@ -570,7 +677,7 @@ function Card({ entry, active }: { entry: Entry; active: boolean }) {
         style={{
           bottom: `calc(${ypx}px)`,
           // width: `${WIDTH}px`,
-          left: left(entry.index),
+          left: left(TYPE_INDEX[entry.type]),
         }}
       >
         {children}
