@@ -271,7 +271,7 @@ export default function Home() {
               <h1 className="text-2xl sm:text-2xl font-bold">
                 Alexander Shortt
               </h1>
-              <h5 className="text-base italic">Restoring beauty and order</h5>
+              <h5 className="text-base italic">Restoring order through beauty</h5>
               <div className="flex gap-2">
                 <a
                   className="text-gray-500"
