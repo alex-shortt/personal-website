@@ -234,7 +234,7 @@ const entries: Entry[] = [
     link: "https://worldlabs.ai",
     type: "company",
     start: "2025-08-18",
-    end: undefined,
+    end: "2025-11-30",
   },
   {
     name: "Vixat",
