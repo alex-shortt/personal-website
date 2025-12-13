@@ -240,7 +240,7 @@ const entries: Entry[] = [
     name: "Abel Police",
     link: "https://abelpolice.com/",
     type: "company",
-    start: "2025-12-13",
+    start: "2025-12-15",
     end: undefined,
   },
   {
