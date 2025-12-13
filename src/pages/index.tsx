@@ -237,6 +237,13 @@ const entries: Entry[] = [
     end: "2025-11-30",
   },
   {
+    name: "Abel Police",
+    link: "https://abelpolice.com/",
+    type: "company",
+    start: "2025-12-13",
+    end: undefined,
+  },
+  {
     name: "Vixat",
     desc: "My first website.",
     type: "art",
