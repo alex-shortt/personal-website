@@ -232,7 +232,7 @@ const entries: Entry[] = [
   {
     name: "World Labs",
     link: "https://worldlabs.ai",
-    type: "company",
+    type: "commission",
     start: "2025-08-18",
     end: "2025-11-30",
   },
