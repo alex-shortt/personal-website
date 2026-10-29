@@ -138,6 +138,7 @@ const entries: Entry[] = [
   },
   {
     name: "The Hamilton Society",
+    link: "https://www.hamilton.so",
     type: "art",
     start: "2025-03-01",
     end: undefined,
@@ -174,7 +175,6 @@ const entries: Entry[] = [
   },
   {
     name: "Swift Systems",
-    link: "https://www.swiftsystems.ai/",
     desc: "ERP for Aerospace / Defense Manufacturing",
     type: "venture",
     start: "2024-10-14",
