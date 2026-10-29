@@ -282,41 +282,32 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="border-b-2 border-gray-600 mt-10" />
-          <Actions />
+          <div className="flex flex-wrap gap-y-1 gap-x-4 mt-10">
+            <div className="faith">faith</div>
+            <div className="learn">learn</div>
+            <div className="art">art</div>
+            <div className="venture">venture</div>
+            <div className="commission">commission</div>
+            <div className="company">company</div>
+          </div>
+          <br />
+          <div
+            className="w-full relative flex mb-16 "
+            style={{ height: `${SCALE}px` }}
+          >
+            <div className="w-14 relative">
+              <Dates />
+            </div>
+            <div className="flex-1 relative">
+              <Lines />
+              <hr className="border-dashed" />
+              {entries.map((entry) => (
+                <Entry key={entry.name} entry={entry} />
+              ))}
+            </div>
+          </div>
         </div>
       </main>
-    </>
-  );
-}
-
-function Actions() {
-  return (
-    <>
-      <div className="flex flex-wrap gap-y-1 gap-x-4 mt-4">
-        <div className="faith">faith</div>
-        <div className="learn">learn</div>
-        <div className="art">art</div>
-        <div className="venture">venture</div>
-        <div className="commission">commission</div>
-        <div className="company">company</div>
-      </div>
-      <br />
-      <div
-        className="w-full relative flex mb-16 "
-        style={{ height: `${SCALE}px` }}
-      >
-        <div className="w-14 relative">
-          <Dates />
-        </div>
-        <div className="flex-1 relative">
-          <Lines />
-          <hr className="border-dashed" />
-          {entries.map((entry) => (
-            <Entry key={entry.name} entry={entry} />
-          ))}
-        </div>
-      </div>
     </>
   );
 }
