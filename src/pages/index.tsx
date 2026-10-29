@@ -6,24 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/logic/cn";
 import { createPortal } from "react-dom";
 import posthog from "posthog-js";
-import Markdown from "react-markdown";
-// @ts-ignore
-import helloWorld from "../essays/hello-world.md";
-
-type Essay = {
-  title: string;
-  date: string;
-  content: string;
-};
-
-const essays: Essay[] = [
-  {
-    title: "Hello World",
-    date: "2025-10-12",
-    content: helloWorld,
-  },
-];
-
 const inter = Inter({ subsets: ["latin"] });
 
 type TYPE = "faith" | "art" | "venture" | "learn" | "commission" | "company";
@@ -251,11 +233,7 @@ const entries: Entry[] = [
   },
 ];
 
-type Tab = "actions" | "ideas";
-
 export default function Home() {
-  const [tab, setTab] = useState<Tab>("actions");
-
   return (
     <>
       <Head>
@@ -304,28 +282,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="border-b-2 border-gray-600 mt-10 flex gap-0">
-            <button
-              onClick={() => setTab("actions")}
-              className={cn(
-                "text-lg w-24",
-                tab === "actions" && "text-white bg-gray-600"
-              )}
-            >
-              Actions
-            </button>
-            <button
-              onClick={() => setTab("ideas")}
-              className={cn(
-                "text-lg w-24",
-                tab === "ideas" && "text-white bg-gray-600"
-              )}
-            >
-              Ideas
-            </button>
-          </div>
-          {tab === "actions" && <Actions />}
-          {tab === "ideas" && <Ideas />}
+          <div className="border-b-2 border-gray-600 mt-10" />
+          <Actions />
         </div>
       </main>
     </>
@@ -360,75 +318,6 @@ function Actions() {
         </div>
       </div>
     </>
-  );
-}
-
-function Ideas() {
-  const [activeEssay, setActiveEssay] = useState<Essay | null>(null);
-
-  if (activeEssay) {
-    return (
-      <div className="mt-4 p-2">
-        <div className="pb-1 border-b border-gray-600">
-          <button className="text-sm" onClick={() => setActiveEssay(null)}>
-            Back
-          </button>
-          <h4 className="text-lg font-bold">{activeEssay.title}</h4>
-          <p className="text-sm">
-            {new Date(activeEssay.date).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </p>
-        </div>
-        <div className="prose mt-4 whitespace-pre-wrap">
-          <Markdown>{activeEssay.content}</Markdown>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-4">
-      {essays.map((essay) => (
-        <EssayCard
-          key={essay.title}
-          essay={essay}
-          active={activeEssay === essay}
-          onClick={() => setActiveEssay(essay)}
-        />
-      ))}
-    </div>
-  );
-}
-
-function EssayCard({
-  essay,
-  active,
-  onClick,
-}: {
-  essay: Essay;
-  active: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <div
-      className={cn(
-        "hover:bg-gray-600/10 p-2 mt-4 cursor-default",
-        active && "bg-gray-600/10"
-      )}
-      onClick={onClick}
-    >
-      <h4 className="text-lg">{essay.title}</h4>
-      <p className="text-sm">
-        {new Date(essay.date).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        })}
-      </p>
-    </div>
   );
 }
 
