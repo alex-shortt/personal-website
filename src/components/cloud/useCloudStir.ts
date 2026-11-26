@@ -143,7 +143,8 @@ export function useCloudStir(
         s.hit,
         s.axis,
         radius,
-        Number(tuning.fluidStrength ?? 0.55),
+        Number(tuning.fluidStrength ?? 0.55) *
+          (event.pointerType === "touch" ? 1.9 : 1),
       );
       invalidate();
       return { mode: "fluid", speed, radius };
