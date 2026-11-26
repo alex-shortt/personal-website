@@ -1,0 +1,25 @@
+Model Information:
+* title:	Studio Softbox Light
+* source:	https://sketchfab.com/3d-models/studio-softbox-light-69e42ce9306249c2995ff196ab0ed8ad
+* author:	Glowbox 3D (https://sketchfab.com/glowbox3d)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Studio Softbox Light" (https://sketchfab.com/3d-models/studio-softbox-light-69e42ce9306249c2995ff196ab0ed8ad) by Glowbox 3D (https://sketchfab.com/glowbox3d) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+Modified: removed softbox and lamp, normalized stand, resized/recompressed textures; derived modular base, repeatable pole section and top mount.
+
+Model Information:
+* title:	Spotlight
+* source:	https://sketchfab.com/3d-models/spotlight-bf2894cc5af04be6a57cc2ff66e0bbee
+* author:	R3indeer (https://sketchfab.com/R3indeer)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Spotlight" (https://sketchfab.com/3d-models/spotlight-bf2894cc5af04be6a57cc2ff66e0bbee) by R3indeer (https://sketchfab.com/R3indeer) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+Modified: removed cable and beam meshes, aligned lamp, resized/recompressed textures.

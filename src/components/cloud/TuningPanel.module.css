@@ -1,0 +1,84 @@
+.panel {
+  position: fixed;
+  z-index: 10;
+  top: 52px;
+  right: 16px;
+  width: min(350px, calc(100vw - 32px));
+  background: #f8f8f5f5;
+  color: #303633;
+  border: 1px solid #c9ceca;
+  border-radius: 6px;
+  font:
+    12px/1.45 ui-monospace,
+    monospace;
+  box-shadow: 0 4px 20px #0001;
+}
+.panel summary {
+  padding: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.body {
+  padding: 0 10px 12px;
+  max-height: calc(100svh - 125px);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.body p {
+  color: #606761;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.panel button {
+  font: inherit;
+  padding: 6px;
+  background: white;
+  border: 1px solid #bcc5bf;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.panel textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font: 10px/1.4 monospace;
+}
+.group {
+  border-top: 1px solid #d4d9d5;
+  margin-top: 8px;
+}
+.control {
+  display: grid;
+  grid-template-columns: 1fr 84px;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 0;
+}
+.control span {
+  grid-column: 1/-1;
+}
+.control input[type="range"] {
+  width: 100%;
+  min-width: 0;
+  accent-color: #758f91;
+}
+.control input[type="number"] {
+  width: 78px;
+  padding: 4px;
+  box-sizing: border-box;
+  font: inherit;
+}
+.control input[type="checkbox"] {
+  justify-self: start;
+}
+
+.control select {
+  grid-column: 1 / -1;
+  font: inherit;
+  padding: 6px;
+  width: 100%;
+  background: white;
+  border: 1px solid #bcc5bf;
+}

@@ -1,0 +1,8 @@
+{
+  "iouAtAlpha50": 0.9187967908002022,
+  "iouAtAlpha10": 0.937348768329609,
+  "referenceCoverage": 0.925095824576104,
+  "extraAreaFraction": 0.00685574203019989,
+  "interiorCoverage": 0.9737278811940936,
+  "enclosedHolePixels": 3
+}

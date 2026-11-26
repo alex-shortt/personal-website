@@ -1,6 +1,15 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Preserve the previous default border and ring colors. */
+@layer base {
+  *, ::before, ::after {
+    border-color: var(--color-gray-200);
+  }
+}
+
+@theme {
+  --default-ring-color: #3b82f6;
+}
 
 html,
 body,
@@ -11,11 +20,11 @@ body,
 }
 
 body {
-  @apply bg-[#fcfcfc] text-black; // Light mode: off-white background, black text
+  @apply bg-[#fcfcfc] text-black; /* Light mode: off-white background, black text */
 
   .dark & {
-    background-color: #181818; // Dark mode: dark gray background
-    color: #f5f5f5; // Dark mode: light gray text for contrast
+    background-color: #181818; /* Dark mode: dark gray background */
+    color: #f5f5f5; /* Dark mode: light gray text for contrast */
   }
 }
 
@@ -42,7 +51,7 @@ a {
 
   &:after {
     content: "";
-    // circle on the left
+    /* circle on the left */
     position: absolute;
     top: 50%;
     left: 0;

@@ -1,0 +1,135 @@
+.page {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: auto;
+  color: #30312f;
+  background: #fcfcfc;
+  color-scheme: light;
+  font-size: 14px;
+  line-height: 1.9;
+}
+.layout {
+  position: relative;
+  height: 100%;
+  min-height: 620px;
+}
+.name {
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 700;
+  margin: 0 0 24px;
+}
+.loadingCover,
+.layout {
+  transition: opacity 220ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .loadingCover,
+  .layout {
+    transition: none;
+  }
+}
+.canvasLayer {
+  position: absolute;
+  inset: 0;
+}
+.scene {
+  pointer-events: none;
+  position: absolute;
+  top: 10%;
+  left: 3%;
+  width: 61%;
+  height: 78%;
+}
+.copy {
+  z-index: 1;
+  position: absolute;
+  top: 48%;
+  left: 63%;
+  width: min(28%, 390px);
+  transform: translateY(-35%);
+  text-wrap: pretty;
+}
+.copy p {
+  margin: 0 0 24px;
+}
+.inlineLink {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: #b4bcb8;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-skip-ink: auto;
+  transition:
+    color 160ms ease,
+    text-decoration-color 160ms ease;
+}
+.inlineLink::before {
+  display: none;
+}
+.inlineLink:hover {
+  color: #456d73;
+  text-decoration-color: #7ba8af;
+}
+.inlineLink:focus-visible {
+  outline: 1px solid #8ab5c0;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .inlineLink {
+    transition: none;
+  }
+}
+.footer {
+  margin-top: 28px;
+  color: #999c98;
+  font-size: 12px;
+}
+.links {
+  display: flex;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+}
+.links a:hover {
+  color: #333;
+}
+.links a::before {
+  display: none;
+}
+.links a:focus-visible {
+  outline: 1px solid #8ab5c0;
+  outline-offset: 5px;
+}
+@media (max-width: 760px) {
+  .layout {
+    min-height: 100svh;
+    height: auto;
+    padding: 16px 0 40px;
+  }
+  .scene {
+    position: relative;
+    top: auto;
+    left: 4%;
+    width: 96%;
+    height: min(60svh, 500px);
+    min-height: 340px;
+  }
+  .copy {
+    position: relative;
+    top: auto;
+    left: -1%;
+    width: 82%;
+    max-width: 440px;
+    margin: 12px auto 0;
+    transform: none;
+    font-size: 13px;
+  }
+  .copy p {
+    margin-bottom: 18px;
+  }
+  .footer {
+    margin-top: 24px;
+  }
+}

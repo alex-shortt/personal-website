@@ -1,0 +1,42 @@
+{
+  "source": "/pfp-transparent-cropped.png",
+  "alphaThreshold": 128,
+  "minimumComponentPixels": 64,
+  "fillInteriorHoles": true,
+  "sourceBounds": [
+    122,
+    41,
+    1018,
+    517
+  ],
+  "sourceCenter": [
+    569.5,
+    278.5
+  ],
+  "unitsPerPixel": 0.004017857142857143,
+  "worldWidth": 3.6,
+  "worldHeight": 1.9125000000000003,
+  "volumeBounds": [
+    2.05,
+    1.2,
+    1.55
+  ],
+  "textureSize": [
+    512,
+    320
+  ],
+  "depthIsInferred": true,
+  "sculpt": {
+    "method": "silhouette-constrained procedural 3D density",
+    "frontShoulderRecess": 0.42,
+    "upperRounding": 0.24,
+    "lowerShoulderTaper": 0.3,
+    "positionNoiseAmplitude": 0.34,
+    "thicknessNoiseAmplitude": 0.2,
+    "maximumDepthExtent": 1.2804222027606427,
+    "wispDepthRange": [
+      0.2,
+      0.29
+    ]
+  }
+}

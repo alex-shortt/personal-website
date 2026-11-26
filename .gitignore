@@ -102,3 +102,8 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Local source models, experiments and deployment credentials
+/tmp/
+.vercel/
+.env*.local

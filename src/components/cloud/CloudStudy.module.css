@@ -1,0 +1,123 @@
+.study {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #fcfcfc;
+  color-scheme: light;
+}
+.canvas {
+  position: absolute;
+  inset: 0;
+  transition: opacity 500ms ease;
+}
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #fcfcfc;
+}
+.fallback img {
+  width: auto;
+  height: 25svh;
+  max-width: 88vw;
+  object-fit: contain;
+}
+@media (prefers-reduced-motion: reduce) {
+  .canvas {
+    transition: none;
+  }
+}
+
+.fps {
+  position: fixed;
+  z-index: 3;
+  top: max(20px, env(safe-area-inset-top));
+  right: max(24px, env(safe-area-inset-right));
+  color: #71717a;
+  font:
+    12px/1.4 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.inspector {
+  position: absolute;
+  z-index: 2;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  color: #858783;
+  font:
+    11px/1.5 ui-monospace,
+    monospace;
+}
+.inspector div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.inspector button {
+  cursor: pointer;
+  background: #fcfcfc;
+  border: 1px solid #dadbd8;
+  padding: 5px 10px;
+  color: #71736f;
+  font: inherit;
+}
+.inspector button[aria-pressed="true"] {
+  border-color: #8c9a9d;
+  color: #30312f;
+}
+.inspector button:focus-visible {
+  outline: 2px solid #8ab5c0;
+  outline-offset: 3px;
+}
+.inspector span {
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .lab .canvas {
+    bottom: min(320px, 48svh);
+  }
+  .lab .inspector {
+    max-height: 46svh;
+    overflow-y: auto;
+  }
+}
+
+.archive {
+  max-width: 900px;
+  text-align: center;
+}
+.archive summary {
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+
+.keyboardLights button {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.keyboardLights button:focus-visible {
+  z-index: 4;
+  top: 20px;
+  left: 20px;
+  width: auto;
+  height: auto;
+  clip-path: none;
+  padding: 8px 12px;
+  background: #fcfcfc;
+  border: 1px solid #8ab5c0;
+}
