@@ -20,6 +20,15 @@ export function useCloudStir(
   disabled: boolean,
 ) {
   const { gl, camera, invalidate } = useThree();
+  const touchSurface = useRef<HTMLDivElement | null>(null);
+  const touchBounds = useRef(
+    [-2.05, 2.05].flatMap((x) =>
+      [-1.2, 1.2].flatMap((y) =>
+        [-1.55, 1.55].map((z) => new Vector3(x, y, z)),
+      ),
+    ),
+  );
+  const projected = useRef(new Vector3());
   const input = useRef({
     previous: new Vector2(),
     lastTime: 0,
@@ -35,12 +44,41 @@ export function useCloudStir(
     const s = input.current;
     if (traceRecording()) recordTrace("configuration", { tuning, disabled });
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    const fine = matchMedia("(hover: hover) and (pointer: fine)");
+    const fine = matchMedia("(any-hover: hover) and (any-pointer: fine)");
+    const coarse = matchMedia("(any-pointer: coarse)");
+    const surface = document.createElement("div");
+    surface.dataset.cloudTouchSurface = "true";
+    surface.setAttribute("aria-hidden", "true");
+    Object.assign(surface.style, {
+      position: "absolute",
+      touchAction: "pinch-zoom",
+      userSelect: "none",
+      WebkitUserSelect: "none",
+      pointerEvents: "none",
+    });
+    gl.domElement.parentElement?.appendChild(surface);
+    touchSurface.current = surface;
+    let activeTouch: number | null = null;
+    const endTouch = () => {
+      const id = activeTouch;
+      activeTouch = null;
+      if (id !== null && surface.hasPointerCapture(id))
+        surface.releasePointerCapture(id);
+    };
+    const updateSurface = () => {
+      surface.style.pointerEvents =
+        !disabled && tuning?.stirEnabled && !reduced.matches && coarse.matches
+          ? "auto"
+          : "none";
+    };
+    updateSurface();
     const reset = () => {
+      endTouch();
       s.lastTime = 0;
     };
     const clear = () => {
       reset();
+      updateSurface();
       resources.current?.fluidField.reset();
       invalidate();
     };
@@ -133,8 +171,9 @@ export function useCloudStir(
         disabled ||
         !tuning?.stirEnabled ||
         reduced.matches ||
-        !fine.matches ||
-        event.pointerType !== "mouse"
+        (event.pointerType === "mouse"
+          ? !fine.matches || activeTouch !== null
+          : event.pointerId !== activeTouch)
       )
         return;
       if (
@@ -177,21 +216,85 @@ export function useCloudStir(
         consume(event);
       }
     };
+    const down = (event: PointerEvent) => {
+      if (event.pointerType !== "touch" && event.pointerType !== "pen") return;
+      if (
+        activeTouch !== null ||
+        disabled ||
+        !tuning?.stirEnabled ||
+        reduced.matches
+      )
+        return;
+      activeTouch = event.pointerId;
+      s.previous.set(event.clientX, event.clientY);
+      s.lastTime = event.timeStamp / 1000;
+      surface.setPointerCapture(event.pointerId);
+    };
+    const up = (event: PointerEvent) => {
+      if (event.pointerId === activeTouch) reset();
+    };
+    surface.addEventListener("pointerdown", down);
+    surface.addEventListener("pointerup", up);
+    surface.addEventListener("pointercancel", up);
+    surface.addEventListener("lostpointercapture", up);
     window.addEventListener("pointermove", move, { passive: true });
     window.addEventListener("blur", reset);
     document.documentElement.addEventListener("pointerleave", reset);
     reduced.addEventListener("change", clear);
     fine.addEventListener("change", clear);
+    coarse.addEventListener("change", clear);
     return () => {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("blur", reset);
       document.documentElement.removeEventListener("pointerleave", reset);
       reduced.removeEventListener("change", clear);
       fine.removeEventListener("change", clear);
+      coarse.removeEventListener("change", clear);
       clear();
+      surface.removeEventListener("pointerdown", down);
+      surface.removeEventListener("pointerup", up);
+      surface.removeEventListener("pointercancel", up);
+      surface.removeEventListener("lostpointercapture", up);
+      surface.remove();
+      touchSurface.current = null;
     };
   }, [camera, gl, invalidate, disabled, tuning, motion, resources]);
   useFrame((_, delta) => {
+    const surface = touchSurface.current;
+    if (surface && surface.style.pointerEvents === "auto") {
+      const width = gl.domElement.clientWidth,
+        height = gl.domElement.clientHeight;
+      let left = width,
+        right = 0,
+        top = height,
+        bottom = 0;
+      for (const corner of touchBounds.current) {
+        const p = projected.current.copy(corner);
+        p.x += motion.current.x;
+        p.y += motion.current.y;
+        p.z += motion.current.z;
+        p.project(camera);
+        const x = ((p.x + 1) * width) / 2,
+          y = ((1 - p.y) * height) / 2;
+        left = Math.min(left, x);
+        right = Math.max(right, x);
+        top = Math.min(top, y);
+        bottom = Math.max(bottom, y);
+      }
+      left = Math.max(0, Math.floor(left));
+      top = Math.max(0, Math.floor(top));
+      const geometry = `${left},${top},${Math.max(0, Math.ceil(Math.min(width, right) - left))},${Math.max(0, Math.ceil(Math.min(height, bottom) - top))}`;
+      if (surface.dataset.bounds !== geometry) {
+        const [x, y, w, h] = geometry.split(",");
+        Object.assign(surface.style, {
+          left: `${x}px`,
+          top: `${y}px`,
+          width: `${w}px`,
+          height: `${h}px`,
+        });
+        surface.dataset.bounds = geometry;
+      }
+    }
     if (!resources.current) return;
     const now = performance.now() / 1000;
     const fluid = resources.current.fluidField;
