@@ -1,6 +1,6 @@
 import type { createFluidField } from "./fluidField";
 import { recordTrace, traceRecording } from "./interactionTrace";
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useLayoutEffect, useRef, type RefObject } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Plane, Raycaster, Vector2, Vector3, type ShaderMaterial } from "three";
 import type { Tuning } from "./tuning";
@@ -25,6 +25,15 @@ export function useCloudStir(
   disabled: boolean,
 ) {
   const { gl, camera, invalidate } = useThree();
+  const interactionEnabled = Boolean(tuning?.stirEnabled);
+  const liveTuning = useRef(tuning);
+  // Commit new settings without tearing down listeners, contacts or momentum.
+  useLayoutEffect(() => {
+    liveTuning.current = tuning;
+  }, [tuning]);
+  useEffect(() => {
+    if (traceRecording()) recordTrace("configuration", { tuning, disabled });
+  }, [tuning, disabled]);
   const touchSurface = useRef<HTMLDivElement | null>(null);
   const touchBounds = useRef(
     [-2.05, 2.05].flatMap((x) =>
@@ -47,7 +56,6 @@ export function useCloudStir(
   });
   useEffect(() => {
     const s = input.current;
-    if (traceRecording()) recordTrace("configuration", { tuning, disabled });
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
     const fine = matchMedia("(any-hover: hover) and (any-pointer: fine)");
     const coarse = matchMedia("(any-pointer: coarse)");
@@ -73,7 +81,7 @@ export function useCloudStir(
     };
     const updateSurface = () => {
       surface.style.pointerEvents =
-        !disabled && tuning?.stirEnabled && !reduced.matches && coarse.matches
+        !disabled && interactionEnabled && !reduced.matches && coarse.matches
           ? "auto"
           : "none";
     };
@@ -90,6 +98,7 @@ export function useCloudStir(
       invalidate();
     };
     const sample = (event: PointerSample, rect: DOMRect) => {
+      const tuning = liveTuning.current;
       if (!tuning) return "no-tuning";
       const now = event.timeStamp / 1000,
         elapsed = now - s.lastTime;
@@ -185,7 +194,7 @@ export function useCloudStir(
           x: event.clientX,
           y: event.clientY,
           disabled,
-          enabled: tuning?.stirEnabled,
+          enabled: interactionEnabled,
           reduced: reduced.matches,
           fine: fine.matches,
           pointerType: event.pointerType,
@@ -199,7 +208,7 @@ export function useCloudStir(
         });
       if (
         disabled ||
-        !tuning?.stirEnabled ||
+        !interactionEnabled ||
         reduced.matches ||
         (event.pointerType === "mouse"
           ? !fine.matches || activeTouch !== null || activeFinger !== null
@@ -231,7 +240,7 @@ export function useCloudStir(
       if (
         activeTouch !== null ||
         disabled ||
-        !tuning?.stirEnabled ||
+        !interactionEnabled ||
         reduced.matches
       )
         return;
@@ -250,7 +259,7 @@ export function useCloudStir(
         reset();
         return;
       }
-      if (disabled || !tuning?.stirEnabled || reduced.matches) return;
+      if (disabled || !interactionEnabled || reduced.matches) return;
       if (
         event.target instanceof Element &&
         event.target.closest(
@@ -268,7 +277,7 @@ export function useCloudStir(
         activeFinger === null ||
         event.touches.length !== 1 ||
         disabled ||
-        !tuning?.stirEnabled ||
+        !interactionEnabled ||
         reduced.matches
       )
         return;
@@ -341,7 +350,7 @@ export function useCloudStir(
       surface.remove();
       touchSurface.current = null;
     };
-  }, [camera, gl, invalidate, disabled, tuning, motion, resources]);
+  }, [camera, gl, invalidate, disabled, interactionEnabled, motion, resources]);
   useFrame((_, delta) => {
     const surface = touchSurface.current;
     if (surface && surface.style.pointerEvents === "auto") {
