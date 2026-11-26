@@ -6,6 +6,11 @@ import { Plane, Raycaster, Vector2, Vector3, type ShaderMaterial } from "three";
 import type { Tuning } from "./tuning";
 import type { MotionSample } from "./motion";
 
+type PointerSample = Pick<
+  PointerEvent,
+  "clientX" | "clientY" | "timeStamp" | "pointerType"
+>;
+
 type Resources = {
   fluidField: ReturnType<typeof createFluidField>;
   volume: ShaderMaterial;
@@ -59,6 +64,7 @@ export function useCloudStir(
     gl.domElement.parentElement?.appendChild(surface);
     touchSurface.current = surface;
     let activeTouch: number | null = null;
+    let activeFinger: number | null = null;
     const endTouch = () => {
       const id = activeTouch;
       activeTouch = null;
@@ -74,6 +80,7 @@ export function useCloudStir(
     updateSurface();
     const reset = () => {
       endTouch();
+      activeFinger = null;
       s.lastTime = 0;
     };
     const clear = () => {
@@ -82,7 +89,7 @@ export function useCloudStir(
       resources.current?.fluidField.reset();
       invalidate();
     };
-    const sample = (event: PointerEvent, rect: DOMRect) => {
+    const sample = (event: PointerSample, rect: DOMRect) => {
       if (!tuning) return "no-tuning";
       const now = event.timeStamp / 1000,
         elapsed = now - s.lastTime;
@@ -149,7 +156,29 @@ export function useCloudStir(
       invalidate();
       return { mode: "fluid", speed, radius };
     };
+    const consume = (point: PointerSample, rect: DOMRect) => {
+      const result = sample(point, rect);
+      if (traceRecording())
+        recordTrace("sample", {
+          x: point.clientX,
+          y: point.clientY,
+          timestamp: point.timeStamp,
+          pointerType: point.pointerType,
+          dispatchedAt: performance.now(),
+          rect: {
+            x: rect.x,
+            y: rect.y,
+            width: rect.width,
+            height: rect.height,
+          },
+          result:
+            typeof result === "object"
+              ? JSON.parse(JSON.stringify(result))
+              : result,
+        });
+    };
     const move = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
       if (traceRecording())
         recordTrace("dispatch", {
           timestamp: event.timeStamp,
@@ -173,7 +202,7 @@ export function useCloudStir(
         !tuning?.stirEnabled ||
         reduced.matches ||
         (event.pointerType === "mouse"
-          ? !fine.matches || activeTouch !== null
+          ? !fine.matches || activeTouch !== null || activeFinger !== null
           : event.pointerId !== activeTouch)
       )
         return;
@@ -190,35 +219,15 @@ export function useCloudStir(
       if (!rect.width || !rect.height) return;
       // Coalesced samples retain their original timestamps, so batching cannot
       // reset recovery or change velocity. Fall back on unsupported browsers.
-      const consume = (point: PointerEvent) => {
-        const result = sample(point, rect);
-        if (traceRecording())
-          recordTrace("sample", {
-            x: point.clientX,
-            y: point.clientY,
-            timestamp: point.timeStamp,
-            dispatchedAt: performance.now(),
-            rect: {
-              x: rect.x,
-              y: rect.y,
-              width: rect.width,
-              height: rect.height,
-            },
-            result:
-              typeof result === "object"
-                ? JSON.parse(JSON.stringify(result))
-                : result,
-          });
-      };
       const samples = event.getCoalescedEvents?.();
       if (samples?.length) {
-        for (const point of samples) consume(point);
+        for (const point of samples) consume(point, rect);
       } else {
-        consume(event);
+        consume(event, rect);
       }
     };
     const down = (event: PointerEvent) => {
-      if (event.pointerType !== "touch" && event.pointerType !== "pen") return;
+      if (event.pointerType !== "pen") return;
       if (
         activeTouch !== null ||
         disabled ||
@@ -234,20 +243,93 @@ export function useCloudStir(
     const up = (event: PointerEvent) => {
       if (event.pointerId === activeTouch) reset();
     };
+    // Touch Events keep delivering moves after the browser cancels its pointer
+    // stream to scroll. Track globally so a gesture may enter from anywhere.
+    const touchStart = (event: TouchEvent) => {
+      if (event.touches.length !== 1) {
+        reset();
+        return;
+      }
+      if (disabled || !tuning?.stirEnabled || reduced.matches) return;
+      if (
+        event.target instanceof Element &&
+        event.target.closest(
+          'input,select,textarea,[aria-label="Cloud tuning"]',
+        )
+      )
+        return;
+      const finger = event.touches[0];
+      activeFinger = finger.identifier;
+      s.previous.set(finger.clientX, finger.clientY);
+      s.lastTime = event.timeStamp / 1000;
+    };
+    const touchMove = (event: TouchEvent) => {
+      if (
+        activeFinger === null ||
+        event.touches.length !== 1 ||
+        disabled ||
+        !tuning?.stirEnabled ||
+        reduced.matches
+      )
+        return;
+      const finger = Array.from(event.touches).find(
+        (t) => t.identifier === activeFinger,
+      );
+      if (!finger) return;
+      const rect = gl.domElement.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const hit = surface.getBoundingClientRect();
+      if (
+        event.cancelable &&
+        finger.clientX >= hit.left &&
+        finger.clientX <= hit.right &&
+        finger.clientY >= hit.top &&
+        finger.clientY <= hit.bottom
+      )
+        event.preventDefault();
+      consume(
+        {
+          clientX: finger.clientX,
+          clientY: finger.clientY,
+          timeStamp: event.timeStamp,
+          pointerType: "touch",
+        },
+        rect,
+      );
+    };
+    const touchEnd = (event: TouchEvent) => {
+      if (
+        Array.from(event.changedTouches).some(
+          (t) => t.identifier === activeFinger,
+        )
+      )
+        reset();
+    };
+    const leave = (event: PointerEvent) => {
+      if (event.pointerType === "mouse" && activeFinger === null) reset();
+    };
+    window.addEventListener("touchstart", touchStart, { passive: true });
+    window.addEventListener("touchmove", touchMove, { passive: false });
+    window.addEventListener("touchend", touchEnd);
+    window.addEventListener("touchcancel", touchEnd);
     surface.addEventListener("pointerdown", down);
     surface.addEventListener("pointerup", up);
     surface.addEventListener("pointercancel", up);
     surface.addEventListener("lostpointercapture", up);
     window.addEventListener("pointermove", move, { passive: true });
     window.addEventListener("blur", reset);
-    document.documentElement.addEventListener("pointerleave", reset);
+    document.documentElement.addEventListener("pointerleave", leave);
     reduced.addEventListener("change", clear);
     fine.addEventListener("change", clear);
     coarse.addEventListener("change", clear);
     return () => {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("blur", reset);
-      document.documentElement.removeEventListener("pointerleave", reset);
+      document.documentElement.removeEventListener("pointerleave", leave);
+      window.removeEventListener("touchstart", touchStart);
+      window.removeEventListener("touchmove", touchMove);
+      window.removeEventListener("touchend", touchEnd);
+      window.removeEventListener("touchcancel", touchEnd);
       reduced.removeEventListener("change", clear);
       fine.removeEventListener("change", clear);
       coarse.removeEventListener("change", clear);
